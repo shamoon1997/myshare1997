@@ -22,7 +22,6 @@ let upload = multer({
 
 router.post('/', catchAsync(async (req, res) => {
     upload(req, res, async (error) => {
-        console.log(req.file)
         if (!req.file) {
             return res.status(400).json({ message: "File is required" });
         }
