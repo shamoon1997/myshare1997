@@ -1,0 +1,10 @@
+2021/09/06 22:57:48:605 Postman-1630922885122 Swapping the old app with new one
+2021/09/06 22:57:48:612 Postman-1630922885122 Swapping done
+2021/09/06 22:57:48:625 Postman-1630922885122 Parent process is alive, killing it now
+2021/12/06 13:50:34:458 Postman-1638780613807 Swapping the old app with new one
+2021/12/06 13:50:34:468 Postman-1638780613807 Swapping done
+2021/12/06 13:50:34:483 Postman-1638780613807 Parent process is alive, killing it now
+2021/12/06 13:50:34:485 Postman-1638780613807 Launching app with command /home/oem/Downloads/Postman/app/Postman --updated --eID=Postman-1638780613807
+2021/12/24 22:31:22:668 Postman-1639977001181 Swapping the old app with new one
+2021/12/24 22:31:22:678 Postman-1639977001181 Swapping done
+2021/12/24 22:31:22:699 Postman-1639977001181 Parent process is alive, killing it now

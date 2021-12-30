@@ -20,7 +20,15 @@ let upload = multer({
     limits: { fileSize: 1048576 }
 }).single('myfile')
 
-router.post('/', catchAsync(async (req, res) => {
+function addProxy(req, res, next) {
+    res.setHeader('Acces-Control-Allow-Origin', '*');
+    res.setHeader('Acces-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    res.setHeader('Acces-Contorl-Allow-Methods', 'Content-Type', 'Authorization');
+    console.log("Add Proxy")
+    next();
+}
+
+router.post('/', addProxy, catchAsync(async (req, res) => {
     upload(req, res, async (error) => {
         if (!req.file) {
             return res.status(400).json({ message: "File is required" });
@@ -32,7 +40,7 @@ router.post('/', catchAsync(async (req, res) => {
         return res.json({ file: `${process.env.ApplicationURL}/files/${savedFile.uuid}` })
     })
 }));
-router.get('/:uuid', catchAsync(async (req, res) => {
+router.get('/:uuid', addProxy, catchAsync(async (req, res) => {
     const uuid = req.params.uuid;
     try {
         const file = await fileService.findFileWithUuid(uuid);
@@ -51,7 +59,7 @@ router.get('/:uuid', catchAsync(async (req, res) => {
     }
 
 }));
-router.get('/files/:uuid', catchAsync(async (req, res) => {
+router.get('/files/:uuid', addProxy, catchAsync(async (req, res) => {
     const uuid = req.params.uuid;
     try {
         const file = await fileService.findFileWithUuid(uuid);
@@ -66,7 +74,7 @@ router.get('/files/:uuid', catchAsync(async (req, res) => {
     }
 }));
 
-router.post('/sendEmail', catchAsync(async (req, res) => {
+router.post('/sendEmail', addProxy, catchAsync(async (req, res) => {
     const { uuid, emailFrom, emailTo } = req.body;
     try {
         if (!uuid || !emailFrom || !emailTo) {
