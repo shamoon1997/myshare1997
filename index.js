@@ -7,9 +7,14 @@ require('./Database/database')();
 const fileRoutes = require('./Routes/file.route');
 const path = require('path');
 
+const corsOptions = {
+    origin: process.env.ALLOWED_CLIENTS.split(',')
+
+};
+
 app.set('views', path.join(__dirname + '/views'));
 app.set('view engine', 'ejs');
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
