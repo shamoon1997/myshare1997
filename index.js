@@ -14,10 +14,16 @@ const corsOptions = {
 
 app.set('views', path.join(__dirname + '/views'));
 app.set('view engine', 'ejs');
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+    res.setHeader('Acces-Control-Allow-Origin', '*');
+    res.setHeader('Acces-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    res.setHeader('Acces-Contorl-Allow-Methods', 'Content-Type', 'Authorization');
+    next();
+})
 app.use('/api/files', fileRoutes);
 app.use('/files', fileRoutes);
 app.use('/download', fileRoutes);
