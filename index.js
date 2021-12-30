@@ -28,6 +28,6 @@ app.use('/api/files', fileRoutes);
 app.use('/files', fileRoutes);
 app.use('/download', fileRoutes);
 
-app.listen(`${process.env.PORT}`, () => {
+app.listen(`${process.env.PORT}` || 3000, () => {
     console.log(`Server is Listening on port ${process.env.PORT}`)
 })
