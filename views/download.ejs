@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: lightblue;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-around;
+            flex-direction: row;
+        }
+
+        .div {
+            visibility: hidden;
+        }
+
+        .title {
+            font-size: large;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .downloadFileContainer {
+            margin: auto;
+            margin-top: 10%;
+            background-color: white;
+            justify-self: center;
+            height: 320px;
+            width: 60%;
+            border: 2px dotted black;
+            border-radius: 20px;
+        }
+
+        .downloadFileContainer>div {
+            margin: auto;
+            margin-top: 6%;
+            height: 200px;
+            width: 50%;
+            padding: 10px;
+            /* border: 2px solid black; */
+            display: flex;
+            flex-direction: row;
+        }
+
+        .downloadFileContainer>div>div {
+            width: 50%;
+
+        }
+
+        button {
+            height: 20%;
+            background-color: cornsilk;
+        }
+
+        .emailForm {
+            padding-top: 20px;
+        }
+
+        input {
+            height: 10%;
+            margin-top: 5px;
+        }
+
+        label {
+            margin-top: 111px;
+        }
+
+        #preLoader {
+            margin: 0;
+            padding: 0;
+            background: #000 url(./spinner.gif) no-repeat center center;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+    </style>
+    <script defer>
+        function validateEmail(emailAdress) {
+            let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (emailAdress.match(regexEmail)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function sendEmail(event, uuid) {
+            event.preventDefault();
+            let emailTo = document.getElementById('EmailTo').value;
+            let emailFrom = document.getElementById('EmailFrom').value;
+            if (validateEmail(emailTo) && validateEmail(emailFrom)) {
+                console.log(uuid);
+                const emailBody = {
+                    emailTo: emailTo,
+                    emailFrom: emailFrom,
+                    uuid: '<%= uuid %>'
+                };
+
+                fetch('http://localhost:3000/files/sendEmail', {
+                    method: 'POST',
+                    body: JSON.stringify(emailBody),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json);
+                    });
+            }
+            else {
+                document.getElementById('EmailTo').value = "";
+                document.getElementById('EmailFrom').value = "";
+                alert("Please enter valid email addresses");
+            }
+        }
+        window.addEventListener("load", function () {
+            document.getElementById("preLoader").style.display = "none";
+        })
+    </script>
+    <title>My sharing Application</title>
+</head>
+
+<body>
+    <div id="preLoader"></div>
+    <div class="container">
+        <div class="title">
+            <p> My sharing Application</p>
+        </div>
+        <div class="div">My sharing</div>
+    </div>
+    <div class="downloadFileContainer">
+        <div>
+            <div>
+                <img src="https://img.icons8.com/ios/150/000000/file--v1.png" style="margin-left: -9%;" />
+                <p>
+                    fileName <%= fileName %>
+                </p>
+                <button class="downloadFileButton" id=" downloadFile"> <a href="<%= download %>">
+                        Download File
+                    </a></button>
+            </div>
+            <div class="emailForm">
+                <form action="">
+                    <label for="EmailTo">EmailTo</label> <input type="email" name="" id="EmailTo"
+                        placeholder="email address" required />
+                    <label for="EmailFrom">EmailFrom</label> <input type="email" name="" id="EmailFrom"
+                        placeholder="email address" required />
+                    <input onclick="sendEmail(event,`<%=uuid%>`)" type="submit" value="Send Email" />
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
